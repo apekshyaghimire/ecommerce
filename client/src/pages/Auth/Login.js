@@ -32,9 +32,10 @@ const Login = () => {
             user: res.data.user,
             token: res.data.token,
         });
+        localStorage.setItem("authToken", res.data.token); // for Axios interceptor
         localStorage.setItem("auth",JSON.stringify(res.data)); 
         
-        navigate("/" || location.state);
+        navigate(location.state||"/" );
       } else {
         toast.error(res.data.message);
       }
@@ -75,8 +76,20 @@ const Login = () => {
                   required
                 />
               </div>
+               
+               <div className="mb-3">
+            <button
+              type="button"
+              className="btn forgot-btn"
+              onClick={() => {
+                navigate("/forgot-password");
+              }}
+            >
+              Forgot Password
+            </button>
+          </div>
               
-              
+             
              
               <button type="submit" className="btn btn-primary">
                 LOGIN
