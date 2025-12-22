@@ -14,6 +14,7 @@ import { useAuth } from "../context/auth";
 import { useNavigate } from "react-router-dom";
 
 // Stripe public key
+
 const stripePromise = loadStripe(
   process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 );
@@ -27,53 +28,9 @@ const CheckoutForm = () => {
   const [auth] = useAuth();
   const navigate = useNavigate();
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!stripe || !elements) return;
-
-//     try {
-//       setLoading(true);
-
-//       const { data } = await axios.post(
-//         "/api/v1/payment/create-payment-intent",
-//         { cart }
-//       );
-
-//       const result = await stripe.confirmCardPayment(
-//         data.clientSecret,
-//         {
-//           payment_method: {
-//             card: elements.getElement(CardElement),
-//             billing_details: {
-//               name: auth?.user?.name,
-//             },
-//           },
-//         }
-//       );
-//     }
-//       if (result.error) {
-//   toast.error(result.error.message);
-// } else {
-//   // ✅ SAVE ORDER TO DATABASE (HERE)
-//   await axios.post("/api/orders", {
-//     products: cart,
-//     payment: {
-//       success: true,
-//       paymentIntentId: result.paymentIntent.id,
-//     },
-//     buyer: auth.user._id,
-//   });
-
-//   toast.success("Payment Successful & Order Placed!");
-
-//   localStorage.removeItem("cart");
-//   navigate("/dashboard/user/orders");
-// }
 
 
-//     setLoading(false);
-//   };
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -102,41 +59,34 @@ const handleSubmit = async (e) => {
       }
     );
 
-    // 3️⃣ Handle result
     if (result.error) {
       toast.error(result.error.message);
-    } else {
-      // ✅ SAVE ORDER TO DATABASE
-      await axios.post("/api/v1/auth/orders", {
-        products: cart,
-        payment: {
-          success: true,
-          paymentIntentId: result.paymentIntent.id,
-        },
-        buyer: auth.user._id,
-      });
-
-      toast.success("Payment Successful & Order Placed!");
-
-      // ✅ CLEAR CART
-      localStorage.removeItem("cart");
-
-      navigate("/dashboard/user/orders");
+      return;
     }
-  } 
-  catch (error) {
-  console.log("Stripe error:", error);
-  toast.error(error?.message || "Payment failed");
-}
 
-  // catch (error) {
-  //   console.log(error);
-  //   toast.error("Payment failed");
-  // }
-   finally {
+    // 3️⃣ Save order
+    await axios.post("/api/v1/auth/orders", {
+      products: cart,
+      payment: {
+        success: true,
+        paymentIntentId: result.paymentIntent.id,
+      },
+      buyer: auth.user._id,
+    });
+
+    toast.success("Payment Successful & Order Placed!");
+
+    localStorage.removeItem("cart");
+    navigate("/dashboard/user/orders");
+
+  } catch (error) {
+    console.log("Stripe error:", error);
+    toast.error("Payment failed");
+  } finally {
     setLoading(false);
   }
 };
+
 
   return (
     <form onSubmit={handleSubmit}>
