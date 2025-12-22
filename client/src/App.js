@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import DropIn from 'braintree-web-drop-in-react';
 import 'braintree-web-drop-in/dist/dropin.css';
-
 import HomePage from "./pages/HomePage";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -29,7 +28,7 @@ import CategoryProduct from "./pages/CategoryProduct";
 import CartPage from "./pages/CartPage";
 import AdminOrders from "./pages/Admin/AdminOrders";
 import Categories from "./pages/Categories";
-
+import Checkout from "./pages/Checkout";
 
 
 
@@ -45,6 +44,7 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetails/>} />
         <Route path="/categories" element={<Categories/>} />
         <Route path="/cart" element={<CartPage/>} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/category/:slug" element={<CategoryProduct/>} />
        <Route path="/search" element={<Search/>} />
         <Route path="/dashboard" element={<PrivateRoute/>}>

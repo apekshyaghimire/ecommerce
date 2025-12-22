@@ -49,7 +49,6 @@
 // });
 
 
-
 import express from "express";
 import colors from "colors";
 import dotenv from "dotenv";
@@ -58,14 +57,11 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 import cors from "cors";
-import Stripe from "stripe";   // ✅ ADD THIS
 
 // configure env
 dotenv.config();
-
-// initialize stripe AFTER dotenv
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // ✅ ADD THIS
 
 // database config
 connectDB();
@@ -82,24 +78,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
-
-// 🔹 STRIPE PAYMENT ROUTE
-app.post("/api/v1/payment/create-payment-intent", async (req, res) => {
-  try {
-    const { amount } = req.body;
-
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: "usd",
-    });
-
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
+app.use("/api/v1/payment", paymentRoutes);
 
 // rest api
 app.get("/", (req, res) => {

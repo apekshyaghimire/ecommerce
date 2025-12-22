@@ -9,26 +9,28 @@ import { SearchProvider } from './context/search';
 import { CartProvider } from './context/cart';   
 import 'antd/dist/reset.css';
 import Search from 'antd/es/transfer/search';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
+const stripePromise = loadStripe(
+  process.env.REACT_APP_STRIPE_PUBLIC_KEY
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthProvider>
     <SearchProvider>
       <CartProvider>
-  <BrowserRouter>
-  
-  
-   <App />
-  
- 
-    
-  
-  </BrowserRouter> 
-  </CartProvider>
-  </SearchProvider> 
-   </AuthProvider>
+        <BrowserRouter>
+          <Elements stripe={stripePromise}>
+            <App />
+          </Elements>
+        </BrowserRouter>
+      </CartProvider>
+    </SearchProvider>
+  </AuthProvider>
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
