@@ -1,6 +1,6 @@
 import express from "express";
-import { requireSignIn } from "../middlewares/authMiddleware.js";
 import Order from "../models/orderModel.js";
+import { requireSignIn } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -12,11 +12,7 @@ router.post("/orders", requireSignIn, async (req, res) => {
     res.status(201).json(order);
   } catch (error) {
     console.log(error);
-    res.status(500).send({
-      success: false,
-      message: "Error while creating order",
-      error,
-    });
+    res.status(500).json({ message: "Error saving order", error });
   }
 });
 
@@ -28,11 +24,8 @@ router.get("/orders", requireSignIn, async (req, res) => {
       .populate("buyer", "name");
     res.json(orders);
   } catch (error) {
-    res.status(500).send({
-      success: false,
-      message: "Error getting orders",
-      error,
-    });
+    console.log(error);
+    res.status(500).json({ message: "Error getting orders", error });
   }
 });
 

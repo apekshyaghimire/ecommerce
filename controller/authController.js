@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 //import router from "../routes/authRoute.js";
 import { comparePassword, hashPassword } from "./../helpers/authHelper.js";
 import JWT from "jsonwebtoken";
+import orderModel from "../models/orderModel.js";
 
 export const registerController = async (req, res) => {
   try {
@@ -202,16 +203,16 @@ export const updateProfileController = async (req, res) => {
 export const getOrdersController = async (req, res) => {
   try {
     const orders = await orderModel
-      .find({})
+      .find({buyer: req.user._id})
       .populate("products", "-photo")
       .populate("buyer", "name")
-      .sort({ createdAt: "-1" });
+      .sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Error WHile Geting Orders",
+      message: "Error While Geting Orders",
       error,
     });
   }
@@ -225,7 +226,7 @@ export const getAllOrdersController = async (req, res) => {
       .find({})
       .populate("products", "-photo")
       .populate("buyer", "name")
-      .sort({ createdAt: "-1" });
+      .sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
     console.log(error);
