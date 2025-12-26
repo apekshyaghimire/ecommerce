@@ -1,5 +1,5 @@
 import express from "express";
-import { registerController , loginController, testController, forgotPasswordController, updateProfileController, getOrdersController, getAllOrdersController, orderStatusController} from "../controller/authController.js";
+import { registerController , loginController, testController, forgotPasswordController, updateProfileController, getOrdersController, getAllOrdersController, orderStatusController, getAllUsersController } from "../controller/authController.js";
 import {  isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 //import Orders from './../client/src/pages/user/Orders';
 
@@ -41,6 +41,9 @@ router.get("/orders", requireSignIn, getOrdersController);
 
 //All Orders
 router.get("/all-orders", requireSignIn, isAdmin, getAllOrdersController);
+
+// Admin: get all users
+router.get("/all-users", requireSignIn, isAdmin, getAllUsersController);
 
 
 // order status update

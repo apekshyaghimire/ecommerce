@@ -3,12 +3,15 @@ import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/ProductDetailsStyles.css";
+import { useCart } from "../context/cart";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [cart, setCart] = useCart();
 
   //initalp details
   useEffect(() => {
@@ -62,7 +65,24 @@ const ProductDetails = () => {
             })}
           </h6>
           <h6>Category : {product?.category?.name}</h6>
-          <button class="btn btn-secondary ms-1">ADD TO CART</button>
+          <button
+            className="btn btn-secondary ms-1"
+            onClick={() => {
+              try {
+                const itemToAdd = { ...product, quantity: 1 };
+                const existing = JSON.parse(localStorage.getItem("cart")) || [];
+                const newCart = [...existing, itemToAdd];
+                localStorage.setItem("cart", JSON.stringify(newCart));
+                setCart(newCart);
+                toast.success("Item Added to cart");
+              } catch (err) {
+                console.error("Add to cart error", err);
+                toast.error("Could not add to cart");
+              }
+            }}
+          >
+            ADD TO CART
+          </button>
         </div>
       </div>
       <hr />

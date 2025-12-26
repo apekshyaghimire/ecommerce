@@ -258,3 +258,18 @@ export const orderStatusController = async (req, res) => {
     });
   }
 };
+
+// Get all users (admin)
+export const getAllUsersController = async (req, res) => {
+  try {
+    const users = await userModel.find({}).select("-password -answer");
+    res.status(200).send({ success: true, users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error while fetching users",
+      error,
+    });
+  }
+};
