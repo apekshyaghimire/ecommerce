@@ -22,7 +22,7 @@ const Layout = ({ children, title, description, keywords, author }) => {
         style={{
           minHeight: "85vh",
           marginTop: "80px",
-          paddingBottom: "120px",
+          paddingBottom: "40px",
         }}
       >
         <Toaster />

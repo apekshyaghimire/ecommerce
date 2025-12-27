@@ -3,11 +3,13 @@ import Layout from "./../components/Layout/Layout";
 import { useSearch } from "../context/search";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart";
+import { useAuth } from "../context/auth";
 import toast from "react-hot-toast";
 const Search = () => {
   const [values, setValues] = useSearch();
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
+  const [auth] = useAuth();
 
   return (
     <Layout title={"Search results"}>
@@ -39,17 +41,19 @@ const Search = () => {
                   >
                     More Details
                   </button>
-                  <button
-                    className="btn btn-secondary ms-1"
-                    onClick={() => {
-                      const itemToAdd = { ...p, quantity: 1 };
-                      setCart([...cart, itemToAdd]);
-                      localStorage.setItem("cart", JSON.stringify([...cart, itemToAdd]));
-                      toast.success("Item Added to cart");
-                    }}
-                  >
-                    ADD TO CART
-                  </button>
+                  {auth?.user?.role !== 1 && (
+                    <button
+                      className="btn btn-secondary ms-1"
+                      onClick={() => {
+                        const itemToAdd = { ...p, quantity: 1 };
+                        setCart([...cart, itemToAdd]);
+                        localStorage.setItem("cart", JSON.stringify([...cart, itemToAdd]));
+                        toast.success("Item Added to cart");
+                      }}
+                    >
+                      ADD TO CART
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/ProductDetailsStyles.css";
 import { useCart } from "../context/cart";
+import { useAuth } from "../context/auth";
 import toast from "react-hot-toast";
 
 const ProductDetails = () => {
@@ -12,6 +13,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [cart, setCart] = useCart();
+  const [auth] = useAuth();
 
   //initalp details
   useEffect(() => {
@@ -65,24 +67,26 @@ const ProductDetails = () => {
             })}
           </h6>
           <h6>Category : {product?.category?.name}</h6>
-          <button
-            className="btn btn-secondary ms-1"
-            onClick={() => {
-              try {
-                const itemToAdd = { ...product, quantity: 1 };
-                const existing = JSON.parse(localStorage.getItem("cart")) || [];
-                const newCart = [...existing, itemToAdd];
-                localStorage.setItem("cart", JSON.stringify(newCart));
-                setCart(newCart);
-                toast.success("Item Added to cart");
-              } catch (err) {
-                console.error("Add to cart error", err);
-                toast.error("Could not add to cart");
-              }
-            }}
-          >
-            ADD TO CART
-          </button>
+          {auth?.user?.role !== 1 && (
+            <button
+              className="btn btn-secondary ms-1"
+              onClick={() => {
+                try {
+                  const itemToAdd = { ...product, quantity: 1 };
+                  const existing = JSON.parse(localStorage.getItem("cart")) || [];
+                  const newCart = [...existing, itemToAdd];
+                  localStorage.setItem("cart", JSON.stringify(newCart));
+                  setCart(newCart);
+                  toast.success("Item Added to cart");
+                } catch (err) {
+                  console.error("Add to cart error", err);
+                  toast.error("Could not add to cart");
+                }
+              }}
+            >
+              ADD TO CART
+            </button>
+          )}
         </div>
       </div>
       <hr />

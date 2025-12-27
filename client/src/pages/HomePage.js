@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
 import { useCart } from "../context/cart";
+import { useAuth } from "../context/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Layout from "./../components/Layout/Layout";
@@ -28,6 +29,7 @@ import "../styles/Homepage.css";
 const HomePage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
+  const [auth] = useAuth();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -195,20 +197,22 @@ const HomePage = () => {
                     >
                       More Details
                     </button>
-                    <button
-                      className="btn btn-dark ms-1"
-                      onClick={() => {
-                        const itemToAdd = { ...p, quantity: 1 };
-                        setCart([...cart, itemToAdd]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([...cart, itemToAdd])
-                        );
-                        toast.success("Item Added to cart");
-                      }}
-                    >
-                      ADD TO CART
-                    </button>
+                    {auth?.user?.role !== 1 && (
+                      <button
+                        className="btn btn-dark ms-1"
+                        onClick={() => {
+                          const itemToAdd = { ...p, quantity: 1 };
+                          setCart([...cart, itemToAdd]);
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify([...cart, itemToAdd])
+                          );
+                          toast.success("Item Added to cart");
+                        }}
+                      >
+                        ADD TO CART
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
