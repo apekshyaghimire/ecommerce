@@ -1,6 +1,6 @@
 import axios from "axios";
-// ✅ Make sure this points to your backend server
-axios.defaults.baseURL = "http://localhost:8080"; 
+// ✅ Make sure this points to your backend server 
+axios.defaults.baseURL = "https://ecommerce-8nyc.onrender.com";
 
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken");
