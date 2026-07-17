@@ -7,9 +7,6 @@ import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
-
-
-    
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const params = useParams();
@@ -27,14 +24,16 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `/api/v1/product/get-product/${params.slug}`,
       );
       setName(data.product.name);
       setId(data.product._id);
       setDescription(data.product.description);
       setPrice(data.product.price);
       setQuantity(data.product.quantity);
-      setShipping(data.product.shipping ? data.product.shipping.toString() : "0");
+      setShipping(
+        data.product.shipping ? data.product.shipping.toString() : "0",
+      );
       setCategory(data.product.category._id);
     } catch (error) {
       console.log(error);
@@ -75,7 +74,7 @@ const UpdateProduct = () => {
       productData.append("category", category);
       const { data } = await axios.put(
         `/api/v1/product/update-product/${id}`,
-        productData
+        productData,
       );
 
       if (data?.success) {
@@ -104,7 +103,7 @@ const UpdateProduct = () => {
     }
   };
   return (
-         <Layout title={"Dashboard - Create Product"}>
+    <Layout title={"Dashboard - Create Product"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
@@ -231,8 +230,7 @@ const UpdateProduct = () => {
         </div>
       </div>
     </Layout>
+  );
+};
 
-  )
-}
-
-export default UpdateProduct
+export default UpdateProduct;

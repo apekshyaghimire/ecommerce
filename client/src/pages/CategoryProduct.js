@@ -13,7 +13,7 @@ const CategoryProduct = () => {
   const getPrductsByCat = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/product-category/${slug}`
+        `/api/v1/product/product-category/${slug}`,
       );
       setProducts(data?.products);
       setCategory(data?.category);
