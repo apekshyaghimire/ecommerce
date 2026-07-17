@@ -8,7 +8,7 @@ import { AuthProvider } from './context/auth';
 import { SearchProvider } from './context/search'; 
 import { CartProvider } from './context/cart';   
 import 'antd/dist/reset.css';
-import Search from 'antd/es/transfer/search';
+//import Search from 'antd/es/transfer/search';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 

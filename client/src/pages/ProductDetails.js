@@ -16,6 +16,7 @@ const ProductDetails = () => {
   const [auth] = useAuth();
 
   //initalp details
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (params?.slug) getProduct();
   }, [params?.slug]);
@@ -23,7 +24,7 @@ const ProductDetails = () => {
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `/api/v1/product/get-product/${params.slug}`,
       );
       setProduct(data?.product);
       getSimilarProduct(data?.product._id, data?.product.category._id);
@@ -35,7 +36,7 @@ const ProductDetails = () => {
   const getSimilarProduct = async (pid, cid) => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/related-product/${pid}/${cid}`
+        `/api/v1/product/related-product/${pid}/${cid}`,
       );
       setRelatedProducts(data?.products);
     } catch (error) {
@@ -73,7 +74,8 @@ const ProductDetails = () => {
               onClick={() => {
                 try {
                   const itemToAdd = { ...product, quantity: 1 };
-                  const existing = JSON.parse(localStorage.getItem("cart")) || [];
+                  const existing =
+                    JSON.parse(localStorage.getItem("cart")) || [];
                   const newCart = [...existing, itemToAdd];
                   localStorage.setItem("cart", JSON.stringify(newCart));
                   setCart(newCart);

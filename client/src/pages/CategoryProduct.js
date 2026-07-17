@@ -8,7 +8,7 @@ const CategoryProduct = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (params?.slug) getPrductsByCat();
   }, [params?.slug]);

@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import DropIn from 'braintree-web-drop-in-react';
+//import DropIn from 'braintree-web-drop-in-react';
 // import 'braintree-web-drop-in/dist/dropin.css';
 import HomePage from "./pages/HomePage";
 import About from "./pages/About";

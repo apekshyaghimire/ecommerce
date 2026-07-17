@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
 
+
     
 const UpdateProduct = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const UpdateProduct = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+       await axios.get("/api/v1/category/get-category");
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -72,7 +73,7 @@ const UpdateProduct = () => {
       productData.append("quantity", quantity);
       photo && productData.append("photo", photo);
       productData.append("category", category);
-      const { data } = axios.put(
+      await axios.put(
         `/api/v1/product/update-product/${id}`,
         productData
       );
@@ -93,7 +94,7 @@ const UpdateProduct = () => {
     try {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
-      const { data } = await axios.delete(
+      await axios.delete(
         `/api/v1/product/delete-product/${id}`
       );
       toast.success("Product DEleted Succfully");
