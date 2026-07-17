@@ -49,7 +49,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getAllCategory();
     getTotal();
@@ -76,7 +76,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (page === 1) return;
     loadMore();
@@ -104,10 +104,11 @@ const HomePage = () => {
     }
     setChecked(all);
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!checked.length || !radio.length) getAllProducts();
   }, [checked.length, radio.length]);
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (checked.length || radio.length) filterProduct();
   }, [checked, radio]);

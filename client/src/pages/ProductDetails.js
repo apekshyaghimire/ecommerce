@@ -12,7 +12,7 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const [cart, setCart] = useCart();
+  const [, setCart] = useCart();
   const [auth] = useAuth();
 
   //initalp details
