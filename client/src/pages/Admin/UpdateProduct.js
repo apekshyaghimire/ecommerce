@@ -48,9 +48,9 @@ const UpdateProduct = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-       await axios.get("/api/v1/category/get-category");
-      if (data?.success) {
-        setCategories(data?.category);
+      const response = await axios.get("/api/v1/category/get-category");
+      if (response.data?.success) {
+        setCategories(response.data?.category);
       }
     } catch (error) {
       console.log(error);
