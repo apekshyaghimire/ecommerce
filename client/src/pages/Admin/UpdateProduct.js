@@ -33,9 +33,8 @@ const UpdateProduct = () => {
       setId(data.product._id);
       setDescription(data.product.description);
       setPrice(data.product.price);
-      setPrice(data.product.price);
       setQuantity(data.product.quantity);
-      setShipping(data.product.shipping);
+      setShipping(data.product.shipping ? data.product.shipping.toString() : "0");
       setCategory(data.product.category._id);
     } catch (error) {
       console.log(error);
@@ -71,19 +70,20 @@ const UpdateProduct = () => {
       productData.append("description", description);
       productData.append("price", price);
       productData.append("quantity", quantity);
+      productData.append("shipping", shipping);
       photo && productData.append("photo", photo);
       productData.append("category", category);
-      const response = await axios.put(
-  `/api/v1/product/update-product/${id}`,
-  productData
-);
+      const { data } = await axios.put(
+        `/api/v1/product/update-product/${id}`,
+        productData
+      );
 
-if (response.data?.success) {
-  toast.success("Product Updated Successfully");
-  navigate("/dashboard/admin/products");
-} else {
-  toast.error(response.data?.message);
-}
+      if (data?.success) {
+        toast.success("Product Updated Successfully");
+        navigate("/dashboard/admin/products");
+      } else {
+        toast.error(data?.message);
+      }
     } catch (error) {
       console.log(error);
       toast.error("something went wrong");
@@ -95,9 +95,7 @@ if (response.data?.success) {
     try {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
-      const response = await axios.delete(
-        `/api/v1/product/delete-product/${id}`
-      );
+      await axios.delete(`/api/v1/product/delete-product/${id}`);
       toast.success("Product DEleted Succfully");
       navigate("/dashboard/admin/products");
     } catch (error) {
@@ -212,7 +210,7 @@ if (response.data?.success) {
                   onChange={(value) => {
                     setShipping(value);
                   }}
-                  value={shipping ? "yes" : "No"}
+                  value={shipping}
                 >
                   <Option value="0">No</Option>
                   <Option value="1">Yes</Option>

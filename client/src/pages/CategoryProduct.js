@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../components/Layout/Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/CategoryProductStyles.css";
@@ -8,21 +8,25 @@ const CategoryProduct = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
-// eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (params?.slug) getPrductsByCat();
-  }, [params?.slug]);
-  const getPrductsByCat = async () => {
+  const slug = params.slug;
+
+  const getPrductsByCat = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/product-category/${params.slug}`
+        `/api/v1/product/product-category/${slug}`
       );
       setProducts(data?.products);
       setCategory(data?.category);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    if (slug) {
+      getPrductsByCat();
+    }
+  }, [slug, getPrductsByCat]);
 
   return (
     <Layout>

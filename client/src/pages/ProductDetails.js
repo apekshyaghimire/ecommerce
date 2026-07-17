@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -16,22 +16,22 @@ const ProductDetails = () => {
   const [auth] = useAuth();
 
   //initalp details
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (params?.slug) getProduct();
-  }, [params?.slug]);
-  //getProduct
-  const getProduct = async () => {
+  const getProduct = useCallback(async () => {
     try {
-      const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`,
-      );
+      const { data } = await axios.get(`/api/v1/product/get-product/${params.slug}`);
       setProduct(data?.product);
       getSimilarProduct(data?.product._id, data?.product.category._id);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [params?.slug]);
+
+  useEffect(() => {
+    if (params?.slug) {
+      getProduct();
+    }
+  }, [params?.slug, getProduct]);
+
   //get similar product
   const getSimilarProduct = async (pid, cid) => {
     try {
