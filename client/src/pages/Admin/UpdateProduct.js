@@ -73,16 +73,17 @@ const UpdateProduct = () => {
       productData.append("quantity", quantity);
       photo && productData.append("photo", photo);
       productData.append("category", category);
-      await axios.put(
-        `/api/v1/product/update-product/${id}`,
-        productData
-      );
-      if (data?.success) {
-        toast.error(data?.message);
-      } else {
-        toast.success("Product Updated Successfully");
-        navigate("/dashboard/admin/products");
-      }
+      const response = await axios.put(
+  `/api/v1/product/update-product/${id}`,
+  productData
+);
+
+if (response.data?.success) {
+  toast.success("Product Updated Successfully");
+  navigate("/dashboard/admin/products");
+} else {
+  toast.error(response.data?.message);
+}
     } catch (error) {
       console.log(error);
       toast.error("something went wrong");
@@ -94,7 +95,7 @@ const UpdateProduct = () => {
     try {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
-      await axios.delete(
+      const response = await axios.delete(
         `/api/v1/product/delete-product/${id}`
       );
       toast.success("Product DEleted Succfully");
